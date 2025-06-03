@@ -1,112 +1,131 @@
-# Around The U.S. - Projeto Fullstack
+🌐 Web Project API Full
+Este projeto é a versão final do app Around the U.S., desenvolvido durante o curso de Desenvolvimento Web da TripleTen. Ele combina um front-end em React com um back-end em Node.js/Express e MongoDB, oferecendo funcionalidades completas de registro, autenticação e manipulação de cartões com imagens.
 
-Este repositório contém uma aplicação web fullstack composta por um backend em Node.js/Express e um frontend em React. O objetivo é permitir que usuários se cadastrem, façam login, criem cards de lugares, curtam e excluam cards, além de editar seu perfil e avatar.
+🚀 Funcionalidades
+Registro de usuários com email e senha
 
-## Estrutura do Projeto
+Autenticação com JWT
 
-```
-.
-├── backend/
-│   ├── app.js
-│   ├── controllers/
-│   ├── middlewares/
-│   ├── models/
-│   ├── routes/
-│   ├── validators/
-│   └── ...
-├── frontend/
-│   ├── src/
-│   ├── public/
-│   ├── index.html
-│   └── ...
-└── README.md
-```
+Proteção de rotas no front-end e back-end
 
-## Tecnologias Utilizadas
+Edição de perfil e avatar do usuário
 
-- **Backend:** Node.js, Express, MongoDB, Mongoose, JWT, Celebrate/Joi, dotenv
-- **Frontend:** React, Vite, React Router, Context API, CSS Modules
-- **Outros:** ESLint, Winston, CORS
+Criação e exclusão de cartões com imagens
 
-## Como rodar o projeto
+Curtidas e descurtidas nos cartões
 
-### Pré-requisitos
+Validação de dados com celebrate e validator
 
-- Node.js (v16+)
-- MongoDB
+Tratamento centralizado de erros
 
-### Backend
+Logs de requisições e erros
 
-1. Acesse a pasta `backend`:
-   ```sh
-   cd backend
-   ```
-2. Instale as dependências:
-   ```sh
-   npm install
-   ```
-3. Configure o arquivo `.env` (já existe um exemplo no repositório):
-   ```
-   MONGO_URI=mongodb://localhost:27017/aroundb
-   JWT_SECRET=suaChaveSecreta
-   ```
-4. Inicie o servidor:
-   ```sh
-   npm run dev
-   ```
-   O backend rodará por padrão na porta 7000.
+Implantação com domínio, HTTPS e PM2
 
-### Frontend
+🧱 Estrutura do Repositório
+bash
+Copiar
+Editar
+web_project_api_full/
+├── backend/     # Código back-end com Express + MongoDB
+├── frontend/    # Aplicação React
+├── .gitignore
+├── README.md
+🛠 Tecnologias Utilizadas
+Back-end
+Node.js
 
-1. Acesse a pasta `frontend`:
-   ```sh
-   cd frontend
-   ```
-2. Instale as dependências:
-   ```sh
-   npm install
-   ```
-3. Inicie o frontend:
-   ```sh
-   npm run dev
-   ```
-   O frontend estará disponível em [http://localhost:3000](http://localhost:3000).
+Express.js
 
-## Funcionalidades
+MongoDB + Mongoose
 
-- Cadastro e login de usuários com autenticação JWT
-- Edição de perfil e avatar
-- Criação, curtir/descurtir e exclusão de cards
-- Validação de formulários
-- Mensagens de feedback e erros amigáveis
+bcryptjs
 
-## Variáveis de Ambiente
+jsonwebtoken (JWT)
 
-No backend, configure as seguintes variáveis no arquivo `.env`:
+celebrate + Joi
 
-```
-MONGO_URI=mongodb://localhost:27017/aroundb
-JWT_SECRET=suaChaveSecreta
-```
+validator
 
-## Scripts Úteis
+winston + express-winston (logs)
 
-### Backend
+dotenv
 
-- `npm run dev` — inicia o servidor com nodemon
-- `npm start` — inicia o servidor em modo produção
-- `npm run lint` — executa o ESLint
+CORS
 
-### Frontend
+Helmet
 
-- `npm run dev` — inicia o frontend em modo desenvolvimento
-- `npm run build` — gera a build de produção
-- `npm run lint` — executa o ESLint
+PM2
 
-## Licença
+Front-end
+React
 
-Este projeto é apenas para fins educacionais.
+React Router
 
----
+Context API
 
-Desenvolvido por Pedro Henrique.
+Fetch API
+
+JSX
+
+LocalStorage
+
+CSS Responsivo
+
+🔒 Segurança
+Senhas são criptografadas com bcrypt
+
+JWT usado para autenticação e autorização
+
+Middleware para proteger rotas
+
+Dados sensíveis em .env (não incluído no repositório)
+
+HTTPS habilitado na implantação com Nginx + Certbot
+
+🧪 Teste de Estabilidade
+Para simular uma falha no servidor e testar o reinício automático com PM2, há uma rota de crash:
+
+bash
+Copiar
+Editar
+GET /crash-test
+🌍 Implantação
+O projeto está implantado em um servidor remoto com:
+
+Front-end React compilado e servido via Nginx
+
+Back-end Node.js rodando com PM2
+
+Domínio personalizado com HTTPS
+
+📄 Variáveis de Ambiente (.env no servidor)
+env
+Copiar
+Editar
+NODE_ENV=production
+JWT_SECRET=uma_senha_secreta_segura
+PORT=3000
+📝 Como rodar localmente
+Pré-requisitos:
+Node.js
+
+MongoDB (local ou Atlas)
+
+Instalação do back-end
+bash
+Copiar
+Editar
+cd backend
+npm install
+npm run dev
+Instalação do front-end
+bash
+Copiar
+Editar
+cd frontend
+npm install
+npm start
+👨‍💻 Autor
+Guilherme Galvão
+
