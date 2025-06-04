@@ -1,10 +1,11 @@
-import js from "@eslint/js";
-import globals from "globals";
-import reactHooks from "eslint-plugin-react-hooks";
-import reactRefresh from "eslint-plugin-react-refresh";
+const js = require("@eslint/js");
+const globals = require("globals");
+const reactHooks = require("eslint-plugin-react-hooks");
+const reactRefresh = require("eslint-plugin-react-refresh");
 
-export default [
+module.exports = [
   { ignores: ["dist"] },
+
   // Configuração para arquivos do frontend (React)
   {
     files: ["**/*.{js,jsx}"],
@@ -34,6 +35,7 @@ export default [
       ],
     },
   },
+
   // Configuração adicional para arquivos do backend (Node.js)
   {
     files: ["**/*.js"],
@@ -41,7 +43,7 @@ export default [
     languageOptions: {
       globals: {
         ...globals.node,
-        process: "readonly", // Adiciona process como global
+        process: "readonly",
       },
       parserOptions: {
         ecmaVersion: "latest",
