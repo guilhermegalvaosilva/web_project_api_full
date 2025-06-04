@@ -1,103 +1,81 @@
 import mongoose from "mongoose";
 import express from "express";
+import cors from "cors";
 import path from "path";
 import { fileURLToPath } from "url";
-import cors from "cors";
 import { errors } from "celebrate";
-
 import dotenv from "dotenv";
+
 dotenv.config();
 
-// Carrega .env apenas em desenvolvimento
+// Carrega variáveis de ambiente com fallback
 if (process.env.NODE_ENV !== "production") {
-  dotenv.config(); // Tenta carregar, mas não falha se não existir
+  dotenv.config();
 }
 
-// Configurações com fallback para desenvolvimento
 const config = {
   JWT_SECRET: process.env.JWT_SECRET || "seguro-mas-nao-producao",
   MONGO_URI: process.env.MONGO_URI || "mongodb://localhost:27017/aroundb",
 };
 
-// Em produção, exige as variáveis
 if (process.env.NODE_ENV === "production") {
   if (!process.env.JWT_SECRET || !process.env.MONGO_URI) {
-    throw new Error(
-      "❌ Variáveis de ambiente obrigatórias faltando em produção!"
-    );
+    throw new Error("❌ Variáveis de ambiente obrigatórias faltando em produção!");
   }
 }
 
-// Get __dirname equivalent in ES modules
+// Express e __dirname compatível com ES Modules
+const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
-const app = express();
 const { PORT = 7000 } = process.env;
 
-// Import controllers
+// Imports
 import { login, createUser } from "./controllers/users.js";
-
-// Import middlewares
 import auth from "./middlewares/auth.js";
 import { requestLogger, errorLogger } from "./middlewares/logger.js";
 import errorHandler from "./middlewares/errorHandler.js";
-
-// Import routers
 import usersRouter from "./routes/users.js";
 import cardsRouter from "./routes/cards.js";
-
-// Import validators
-import {
-  validateLogin,
-  validateCreateUser,
-} from "./validators/usersValidator.js";
+import { validateLogin, validateCreateUser } from "./validators/usersValidator.js";
 
 // Middlewares
-app.use(cors()); // Permite TODAS origens (remova depois dos testes)
+app.use(cors()); // Cuidado: ajuste para produção
 app.use(express.json());
-app.use(express.static(path.join(__dirname, "../frontend")));
 
-// MongoDB connection
+// MongoDB
 mongoose
-  .connect(process.env.MONGO_URI)
+  .connect(config.MONGO_URI)
   .then(() => console.log("✅ Conectado ao MongoDB com sucesso"))
   .catch((err) => console.error("❌ Erro na conexão com MongoDB:", err));
 
-// Request logger
+// Logs
 app.use(requestLogger);
 
-// Crash test route
+// Crash test
 app.get("/crash-test", () => {
   setTimeout(() => {
     throw new Error("O servidor travará agora");
   }, 0);
 });
 
-// Public routes
+// Rotas públicas
 app.post("/signin", validateLogin, login);
 app.post("/signup", validateCreateUser, createUser);
 
-// Protected routes
+// Rotas protegidas
 app.use("/users", auth, usersRouter);
 app.use("/cards", auth, cardsRouter);
 
-// Error logger
+// Logs de erro e handlers
 app.use(errorLogger);
-
-// Error handlers
 app.use(errors());
 app.use(errorHandler);
 
-// Frontend route (React)
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../frontend/index.html"));
-});
-
-// 404 handler (API)
+// Rota 404 genérica
 app.use((req, res) => {
   res.status(404).json({ message: "Rota não encontrada" });
 });
 
-// Start server
-app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`));
+// Inicialização
+app.listen(PORT, () => console.log(`🚀 Servidor rodando na porta ${PORT}`));
